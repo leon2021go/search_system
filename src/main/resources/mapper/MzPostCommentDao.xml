@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leon.flying.dao.MzPostCommentDao">
+  <resultMap id="BaseResultMap" type="com.leon.flying.entity.MzPostCommentDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="post_id" jdbcType="BIGINT" property="postId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="commentor_id" jdbcType="BIGINT" property="commentorId" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.leon.flying.entity.MzPostCommentDO">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, post_id, parent_id, commentor_id, is_del, create_id, update_id, create_time, update_time
+  </sql>
+
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="getByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mz_post_comment
+    where id = #{id,jdbcType=BIGINT} and is_del = '0'
+  </select>
+
+  <select id="getDeleteByPk" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mz_post_comment
+    where id = #{id,jdbcType=BIGINT} and is_del = '1'
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update mz_post_comment set is_del = 1
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.leon.flying.entity.MzPostCommentDO">
+    insert into mz_post_comment (id, post_id, parent_id, commentor_id,
+      is_del, create_id, update_id, 
+      create_time, update_time, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{postId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{commentorId,jdbcType=BIGINT},
+      #{isDel,jdbcType=TINYINT}, #{createId,jdbcType=BIGINT}, #{updateId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.leon.flying.entity.MzPostCommentDO">
+    insert into mz_post_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="postId != null">
+        post_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="commentorId != null">
+        commentor_id,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="updateId != null">
+        update_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="postId != null">
+        #{postId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentorId != null">
+        #{commentorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.leon.flying.entity.MzPostCommentDO">
+    update mz_post_comment
+    <set>
+      <if test="postId != null">
+        post_id = #{postId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="updateId != null">
+        update_id = #{updateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.leon.flying.entity.MzPostCommentDO">
+    update mz_post_comment
+    set post_id = #{postId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=TINYINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.leon.flying.entity.MzPostCommentDO">
+    update mz_post_comment
+    set post_id = #{postId,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=TINYINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectCommentsFromPostId" parameterType="java.lang.Long" resultType="com.leon.flying.entity.MzPostCommentDO">
+    select
+    post_id as postId,
+    parent_id as parentId,
+    commentor_id as commentorId,
+    content,
+    t2.name as commentor,
+    t1.create_time as comment_time
+    from mz_post_comment t1 left join mz_user t2 on t1.create_id = t2.id
+    where t1.post_id = #{postId,jdbcType=BIGINT}
+    and t1.is_del = 0
+    and t2.is_del = 0
+    LIMIT #{startIndex,jdbcType=BIGINT}, #{pageSize,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectCommentsCountByPostId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select
+     count(1)
+    from mz_post_comment t1 left join mz_user t2 on t1.create_id = t2.id
+    where t1.post_id = #{postId,jdbcType=BIGINT}
+    and t1.is_del = 0
+    and t2.is_del = 0
+  </select>
+  <select id="selectAllCommentsFromPostId" parameterType="java.lang.Long" resultType="com.leon.flying.entity.MzPostCommentDO">
+    select
+    t1.id as id,
+    t1.post_id as postId,
+    t1.parent_id as parentId,
+    t1.commentor_id as commentorId,
+    t1.content,
+    t1.create_time as commentTime,
+    t2.name as commentor,
+    t2.pic as commentorAvatar
+    from mz_post_comment t1 left join mz_user t2 on t1.commentor_id = t2.id
+    where t1.post_id = #{postId,jdbcType=BIGINT}
+    and t1.is_del = 0
+    and t2.is_del = 0
+    order by t1.create_time desc
+  </select>
+  <select id="selectFirstLevelFromPostId" parameterType="java.lang.Long" resultType="com.leon.flying.entity.MzPostCommentDO">
+    select
+    t1.id as id,
+    t1.post_id as postId,
+    t1.parent_id as parentId,
+    t1.commentor_id as commentorId,
+    t1.content,
+    t1.create_time as commentTime,
+    t2.name as commentor,
+    t2.pic as commentorAvatar
+    from mz_post_comment t1 left join mz_user t2 on t1.commentor_id = t2.id
+    where t1.post_id = #{postId,jdbcType=BIGINT}
+    and t1.parent_id = 0
+    and t1.is_del = 0
+    and t2.is_del = 0
+    order by t1.create_time desc
+  </select>
+
+  <select id="selectChildLevelFromPostId" parameterType="java.lang.Long" resultType="com.leon.flying.entity.MzPostCommentDO">
+    select
+    t1.id as id,
+    t1.post_id as postId,
+    t1.parent_id as parentId,
+    t1.commentor_id as commentorId,
+    t1.content,
+    t1.create_time as commentTime,
+    t2.name as commentor,
+    t2.pic as commentorAvatar
+    from mz_post_comment t1 left join mz_user t2 on t1.commentor_id = t2.id
+    where t1.post_id = #{postId,jdbcType=BIGINT}
+    and t1.parent_id &gt; 0
+    and t1.is_del = 0
+    and t2.is_del = 0
+    order by t1.create_time desc
+  </select>
+  <select id="selectReplyCommentById"  parameterType="java.lang.Long" resultType="com.leon.flying.entity.MzPostCommentDO">
+    select
+    id,
+    post_id as postId,
+    parent_id as parentId,
+    commentor_id as commentorId,
+    content,
+    create_time as commentTime
+    from mz_post_comment
+    where parent_id = #{id,jdbcType=BIGINT}
+    and is_del = 0
+    order by create_time desc
+  </select>
+
+</mapper>

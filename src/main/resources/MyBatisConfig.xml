@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="aggressiveLazyLoading" value="true" />
+		<setting name="logImpl" value="SLF4J" />
+	</settings>
+
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql" />
+			<property name="offsetAsPageNum" value="true" />
+			<property name="rowBoundsWithCount" value="true" />
+			<property name="pageSizeZero" value="true" />
+			<property name="reasonable" value="false" />
+			<property name="params" value="pageNum=pageHelperStart;pageSize=pageHelperRows;" />
+			<property name="supportMethodsArguments" value="false" />
+			<property name="returnPageInfo" value="none" />
+		</plugin>
+	</plugins>
+
+	<mappers>
+
+		<!-- 
+		务必记得删除AppKehujyfkMapper.xml 和 AppKehujyfkDao.xml 这个地方只是 演示
+		
+		<mapper resource="mybatis/mapper/AppKehujyfkMapper.xml" />
+		<mapper resource="mybatis/ext/AppKehujyfkDao.xml" /> 
+		-->
+
+		<!-- <mapper resource="mybatis/ext/wmys/WmysPackagePromoteDao.xml" />
+		<mapper resource="mybatis/mapper/wmys/WmysPackagePromoteMapper.xml" />
+		<mapper resource="mybatis/mapper/ptgy/PtgyKehujbxxMapper.xml" />
+		<mapper resource="mybatis/ext/xtgy/XtgyWenjianccsyDao.xml" />
+		<mapper resource="mybatis/mapper/xtgy/XtgyWenjianccsyMapper.xml" />-->
+	</mappers>
+
+</configuration>

@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leon.flying.dao.MzPostDao">
+  <resultMap id="BaseResultMap" type="com.leon.flying.entity.MzPostDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pet_tag" jdbcType="VARCHAR" property="petTag" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="topic_name" jdbcType="VARCHAR" property="topicName" />
+    <result column="plate_title" jdbcType="VARCHAR" property="plateTitle" />
+    <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="location_des" jdbcType="VARCHAR" property="locationDes" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="image_urls" jdbcType="LONGVARCHAR" property="imageUrls" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="page_type" jdbcType="VARCHAR" property="pageType" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="hot_value" jdbcType="BIGINT" property="hotValue" />
+    <result column="view_num" jdbcType="INTEGER" property="viewNum" />
+    <result column="is_top" jdbcType="TINYINT" property="isTop" />
+    <result column="pre_likes" jdbcType="INTEGER" property="preLikes" />
+    <result column="likes_number" jdbcType="INTEGER" property="likesNumber" />
+    <result column="robot_like_num" jdbcType="INTEGER" property="robotLikeNum" />
+    <result column="pre_collections" jdbcType="INTEGER" property="preCollections" />
+    <result column="collections_number" jdbcType="INTEGER" property="collectionsNumber" />
+    <result column="collect_robot_num" jdbcType="INTEGER" property="collectRobotNum" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, pet_tag, title, topic_name, plate_title,  content, image_urls, video_url, longitude, latitude, location_des,
+    label, type, page_type, channel, hot_value, view_num, is_top, pre_likes, likes_number,
+    robot_like_num, pre_collections, collections_number, collect_robot_num, release_time,
+    status, create_id, update_id, create_time, update_time
+  </sql>
+
+  <select id="getByPrimaryKey" parameterType="java.lang.Long" resultType="com.leon.flying.so.PosterSO">
+    select 
+    p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+    p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+    p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number as likesNumber,
+    p.collections_number as collectionsNumber,  p.release_time as releaseTime, p.status,  p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+    from mz_user u join mz_post p on p.create_id = u.id
+    where p.id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getPostList" resultType="com.leon.flying.so.PosterSO">
+    select
+    p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+    p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+    p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number as likesNumber,
+    p.collections_number as collectionsNumber,  p.release_time, p.status, p.create_id, p.update_id, p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+    from mz_user u join mz_post p on p.create_id = u.id
+    where 1=1
+    <if test="title != null and title != ''">
+      and p.title LIKE CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="status != null">
+      and p.status = #{status,jdbcType=TINYINT}
+    </if>
+    order by p.is_top desc, p.update_time desc
+  </select>
+
+  <select id="getPostListByTag" resultType="com.leon.flying.so.PosterSO">
+    select
+    p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+    p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+    p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number as likesNumber,
+    p.collections_number as collectionsNumber,  p.release_time, p.status, p.create_id, p.update_id, p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+    from mz_user u join mz_post p on p.create_id = u.id
+    where 1=1
+    <if test="plateTitle != null and plateTitle != ''">
+      and p.plate_title LIKE CONCAT('%',#{plateTitle,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="status != null">
+      and p.status = #{status,jdbcType=TINYINT}
+    </if>
+    order by p.is_top desc, p.update_time desc
+  </select>
+
+  <select id="getTopPostList" resultType="com.leon.flying.so.PosterSO">
+    select
+    p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+    p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+    p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number as likesNumber,
+    p.collections_number as collectionsNumber,  p.release_time, p.status, p.create_id, p.update_id, p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+    from mz_user u join mz_post p on p.create_id = u.id
+    where is_top = 1
+    and p.status = 1
+    order by p.update_time desc
+  </select>
+
+  <select id="listPosts" resultType="com.leon.flying.so.PosterSO">
+    select
+    p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+    p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+    p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number,
+    p.collections_number,  p.release_time, p.status, p.create_id, p.update_id, p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+    from mz_user u join mz_post p on p.create_id = u.id
+    where 1=1
+    <if test="petTag != null and petTag != ''">
+      and p.pet_tag LIKE CONCAT('%',#{petTag,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="label != null and label != ''">
+      and p.label LIKE CONCAT('%',#{label,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="content != null and content != ''">
+      and p.content LIKE CONCAT('%',#{content,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="status != null">
+      and p.status = #{status,jdbcType=TINYINT}
+    </if>
+    order by p.create_time desc
+  </select>
+
+  <select id="getPostsByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mz_post
+    where
+    id in
+    <foreach item="id"  collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+    and status = 1
+  </select>
+
+  <select id="getDeleteByPk" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mz_post
+    where id = #{id,jdbcType=BIGINT} and  = '1'
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update mz_post set = 1
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.leon.flying.entity.MzPostDO">
+    insert into mz_post (id, pet_teg, title, topic_name, plate_title,
+      content, image_urls, video_url,
+      longitude, latitude, location_des, label,
+      type, page_type, channel, hot_value, view_num, is_top,
+      pre_likes, likes_number, robot_like_num, pre_collections, collections_number, collect_robot_num,
+      release_time, status, create_id, update_id,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{petTag,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{topicName,jdbcType=VARCHAR}, #{plateTitle,jdbcType=VARCHAR},
+      #{content,jdbcType=LONGVARCHAR}, #{imageUrls,jdbcType=LONGVARCHAR}, #{videoUrl,jdbcType=VARCHAR},
+      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{locationDes,jdbcType=VARCHAR},
+      #{label,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{pageType,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
+      #{hotValue,jdbcType=INTEGER}, #{viewNum,jdbcType=INTEGER}, {isTop,jdbcType=TINYINT},
+      #{preLikes,jdbcType=INTEGER}, #{likesNumber,jdbcType=INTEGER}, #{robotLikeNum,jdbcType=INTEGER},
+      #{preCollections,jdbcType=INTEGER}, #{collectionsNumber,jdbcType=INTEGER}, #{collectRobotNum,jdbcType=INTEGER},
+      #{releaseTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT},
+      #{createId,jdbcType=BIGINT}, #{updateId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.leon.flying.entity.MzPostDO">
+    insert into mz_post
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="petTag != null">
+        pet_tag,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="topicName != null">
+        topic_name,
+      </if>
+      <if test="plateTitle != null">
+        plate_title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="imageUrls != null">
+        image_urls,
+      </if>
+      <if test="videoUrl != null">
+        video_url,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="locationDes != null">
+        location_des,
+      </if>
+      <if test="label != null">
+        label,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="pageType != null">
+        page_type,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="hotValue != null">
+        hot_value,
+      </if>
+      <if test="viewNum != null">
+        view_num,
+      </if>
+      <if test="isTop != null">
+        is_top,
+      </if>
+      <if test="preLikes != null">
+        pre_likes,
+      </if>
+      <if test="likesNumber != null">
+        likes_number,
+      </if>
+      <if test="robotLikeNum != null">
+        robot_like_num,
+      </if>
+      <if test="preCollections != null">
+        pre_collections,
+      </if>
+      <if test="collectionsNumber != null">
+        collections_number,
+      </if>
+      <if test="collectRobotNum != null">
+        collect_robot_num,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="updateId != null">
+        update_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="petTag != null">
+        #{petTag,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="topicName != null">
+        #{topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="plateTitle != null">
+        #{plateTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imageUrls != null">
+        #{imageUrls,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="videoUrl != null">
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="locationDes != null">
+        #{locationDes,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="pageType != null">
+        #{pageType,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="hotValue != null">
+        #{hotValue,jdbcType=INTEGER},
+      </if>
+      <if test="viewNum != null">
+        #{viewNum,jdbcType=INTEGER},
+      </if>
+      <if test="isTop != null">
+        #{isTop,jdbcType=TINYINT},
+      </if>
+      <if test="preLikes != null">
+        #{preLikes,jdbcType=INTEGER},
+      </if>
+      <if test="likesNumber != null">
+        #{likesNumber,jdbcType=INTEGER},
+      </if>
+      <if test="robotLikeNum != null">
+        #{robotLikeNum,jdbcType=INTEGER},
+      </if>
+      <if test="preCollections != null">
+        #{preCollections,jdbcType=INTEGER},
+      </if>
+      <if test="collectionsNumber != null">
+        #{collectionsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="collectRobotNum != null">
+        #{collectRobotNum,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.leon.flying.entity.MzPostDO">
+    update mz_post
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="hotValue != null">
+        hot_value = #{hotValue,jdbcType=BIGINT},
+      </if>
+      <if test="locationDes != null">
+        location_des = #{locationDes,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="isTop != null">
+        is_top = #{isTop,jdbcType=TINYINT},
+      </if>
+      <if test="preLikes != null">
+        pre_likes = #{preLikes,jdbcType=INTEGER},
+      </if>
+      <if test="likesNumber != null">
+        likes_number = #{likesNumber,jdbcType=INTEGER},
+      </if>
+      <if test="preCollections != null">
+        pre_collections = #{preCollections,jdbcType=INTEGER},
+      </if>
+      <if test="collectionsNumber != null">
+        collections_number = #{collectionsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="updateId != null">
+        update_id = #{updateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="petTag != null">
+        pet_tag = #{petTag,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imageUrls != null">
+        image_urls = #{imageUrls,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateStatus">
+        update mz_post
+            set status = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.leon.flying.entity.MzPostDO">
+    update mz_post
+    set title = #{title,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      location_des = #{locationDes,jdbcType=VARCHAR},
+      label = #{label,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      is_top = #{isTop,jdbcType=TINYINT},
+      pre_likes = #{preLikes,jdbcType=INTEGER},
+      likes_number = #{likesNumber,jdbcType=INTEGER},
+      pre_collections = #{preCollections,jdbcType=INTEGER},
+      collections_number = #{collectionsNumber,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR},
+      pic = #{pic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.leon.flying.entity.MzPostDO">
+    update mz_post
+    set title = #{title,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      location_des = #{locationDes,jdbcType=VARCHAR},
+      label = #{label,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      is_top = #{isTop,jdbcType=TINYINT},
+      pre_likes = #{preLikes,jdbcType=INTEGER},
+      likes_number = #{likesNumber,jdbcType=INTEGER},
+      pre_collections = #{preCollections,jdbcType=INTEGER},
+      collections_number = #{collectionsNumber,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      create_id = #{createId,jdbcType=BIGINT},
+      update_id = #{updateId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getDetailById" resultType="com.leon.flying.so.PostDetailSO">
+
+  </select>
+  <select id="listPostDoByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mz_post
+    where create_id = #{userId,jdbcType=BIGINT}
+        and status = 1
+    order by update_time desc
+  </select>
+  <select id="listPostsByIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mz_post
+    where id in
+    <foreach item="id"  collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+    order by update_time desc
+  </select>
+    <select id="getNearByPost" resultType="com.leon.flying.so.PosterSO">
+      select
+        p.id, p.pet_tag as petTag, p.title, p.topic_name as topicName, p.plate_title as plateTitle,  p.content, p.image_urls as imageUrls,
+        p.video_url as videoUrl, p.longitude, p.latitude, p.location_des as locationDes,
+        p.label, p.type, p.page_type as pageType, p.channel, p.hot_value as hotValue, p.view_num as viewNum, p.is_top as isTop, p.status, p.likes_number as likesNumber,
+        p.collections_number as collectionsNumber,  p.release_time, p.status, p.create_id, p.update_id, p.create_time as createTime,  u.id as createId, u.pic as creatorAvatarUrl, u.name as creatorName
+        from mz_user u join mz_post p on p.create_id = u.id
+      where p.longitude &gt;= #{minlng} and p.longitude &lt;= #{maxlng} and p.latitude &gt;= #{minlat} and p.latitude &lt;= #{maxlat}
+      order by p.release_time desc
+    </select>
+
+    <update id="setPostTop">
+    update mz_post
+    set is_top = #{isTop,jdbcType=TINYINT},
+    update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="setPostDown">
+    update mz_post
+    set status = #{isDown,jdbcType=TINYINT},
+    update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

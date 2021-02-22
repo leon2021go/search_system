@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+		<body>
+		<div th:replace="commons/bar::topbar"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<!--引入侧边栏-->
+				<div th:replace="commons/bar::#sidebar(activeUri='poster')"></div>
+
+				<div class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<label for="post_content">内容：</label><input type="text" id="post_content">
+					<label for="label_content">标签：</label><input type="text" id="label_content">
+					<label for="pet_tag">宠物类别：</label><input type="text" id="pet_tag">
+					<label for="status">发布状态：</label>
+					<select id="status" name ="发布状态">
+						<option value="" SELECTED>全部</option>
+						<option value="0">未发布</option>
+						<option value="1">已发布</option>
+						<option value="2">已屏蔽</option>
+					</select>
+					<button  type="submit" class="btn btn-primary" id="search_btn">查询</button>
+				</div>
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<h2><a class="btn btn-sm btn-success" href="poster/addposter" th:href="@{/poster/addposter}">帖子添加</a></h2>
+					<div class="table-responsive">
+						<table  id="t_list_data" class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>帖子内容</th>
+									<th>标签</th>
+									<th>发帖人</th>
+									<th>发帖状态</th>
+									<th>发帖时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item:${pageData.items}">
+									<td th:text="${item.id}"></td>
+									<td style="max-width: 400px;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" th:text="${item.content}"></td>
+									<td th:text="${item.petTag}"></td>
+									<td th:text="${item.creatorName}"></td>
+									<td>
+										<span th:switch="${item.status}">
+											<span th:case="2">
+												已屏蔽
+											</span>
+											<span th:case="1">
+												已发布
+											</span>
+											<span th:case="0">
+												未发布
+											</span>
+										</span>
+									</td>
+									<td th:text="${item.createTime}"></td>
+									<td>
+										<a class="btn btn-sm btn-primary" th:href="@{/poster/get/}+${item.id}">编辑</a>
+										<span th:switch="${item.status}">
+											<span th:case="2">
+												<a class="btn btn-sm btn-primary" th:href="@{/poster/down/0/}+${item.id}">取消屏蔽</a>
+											</span>
+											<span th:case="1">
+												<a class="btn btn-sm btn-primary" th:href="@{/poster/down/2/}+${item.id}">屏蔽</a>
+											</span>
+											<span th:case="0">
+												<a class="btn btn-sm btn-primary" th:href="@{/poster/down/1/}+${item.id}">发布</a>
+											</span>
+										</span>
+										<span th:switch="${item.isTop}">
+											<span th:case="1">
+												<a class="btn btn-sm btn-primary" th:href="@{/poster/top/0/}+${item.id}">取消置顶</a>
+											</span>
+											<span th:case="0">
+												<a class="btn btn-sm btn-primary" th:href="@{/poster/top/1/}+${item.id}">置顶</a>
+											</span>
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</main>
+				<form id="deleteEmpForm"  method="post">
+					<input type="hidden" name="_method" value="delete"/>
+				</form>
+
+
+			</div>
+		</div>
+		<!--分页导航栏-->
+		<div style="text-align: center;">
+			共<span id="totalNumber" style="color: dodgerblue" th:value="${pageData.totalCount}" th:text="${pageData.totalCount}"></span>条
+			当前第<span id="currentPage" style="color: black" th:value="${pageData.currentPage}" th:text="${pageData.currentPage}"></span>/<span id="totalPage" style="color: black" th:text="${pageData.totalPage}"></span>页
+
+			<button id="Previous" class="btn btn-default"  th:value="${pageData.currentPage}-1">Previous</button>
+			<button id="Next" class="btn btn-default" th:value="${pageData.currentPage}+1">Next</button>
+			跳至<input id="pageNumber" type="text" style="width: 78px">页
+			<button id="goPage" type="button" class="btn btn-primary">GO</button>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+		<script type="text/javascript" src="asserts/js/jquery.min.js" th:src="@{/asserts/js/jquery.min.js}"></script>
+<!--		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>-->
+		<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+
+		<script type="text/javascript" src="asserts/js/page.js" th:src="@{/asserts/js/page.js}"></script>
+<!--		<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:href="@{/asserts/js/bootstrap.min.js}"></script>-->
+<!--		<script type="text/javascript" src="asserts/js/paging.js" th:href="@{/asserts/js/paging.js}"></script>-->
+
+<!--		<script>-->
+<!--			feather.replace()-->
+<!--		</script>-->
+<!--		<script>-->
+<!--			$(".deleteBtn").click(function(){-->
+<!--			    //删除当前员工的-->
+<!--			    $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();-->
+<!--			    return false;-->
+<!--            });-->
+<!--		</script>-->
+	</body>
+</html>
