@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -17,6 +18,7 @@ import java.util.Locale;
         "com.leon.flying.spider.mapper",
         "com.leon.flying.mapper"})
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class FlyingApplication extends SpringBootServletInitializer {
 
     @Override

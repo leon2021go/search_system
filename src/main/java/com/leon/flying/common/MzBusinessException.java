@@ -14,6 +14,12 @@ public class MzBusinessException extends RuntimeException {
     /**  */
     private static final long serialVersionUID = -5034167684619559206L;
     private MzRespose result;
+    private CommonError commonError;
+
+    public MzBusinessException(EmBussinessError emBussinessError){
+        super();
+        this.commonError = new CommonError(emBussinessError);
+    }
 
 
     public MzBusinessException(MzRespose result) {
