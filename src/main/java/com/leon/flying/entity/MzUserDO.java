@@ -11,6 +11,8 @@ package com.leon.flying.entity;
  * @since : 2020-07-12
  */
 public class MzUserDO extends BaseDO{
+
+    private String password;
     /**
      * 微信openid
      */
@@ -53,7 +55,7 @@ public class MzUserDO extends BaseDO{
     /**
      * 用户类别
      */
-    private Byte type;
+    private Integer type;
 
     /**
      * 积分
@@ -65,6 +67,13 @@ public class MzUserDO extends BaseDO{
      */
     private String extension;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getOpenId() {
         return openId;
@@ -158,7 +167,7 @@ public class MzUserDO extends BaseDO{
      * 用户类别
      * @return type 用户类别
      */
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -166,7 +175,7 @@ public class MzUserDO extends BaseDO{
      * 用户类别
      * @param type 用户类别
      */
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

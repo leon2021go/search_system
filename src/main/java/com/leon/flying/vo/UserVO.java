@@ -1,11 +1,20 @@
 package com.leon.flying.vo;
 
-public class UserVO {
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+
+public class UserVO implements Serializable {
 
     /**
      * 用户id
      */
     private String id;
+
+    /**
+     * 密码
+     */
+    @NotBlank(message = "密码不能为空")
+    private String password;
 
     /**
      * 微信code
@@ -15,11 +24,13 @@ public class UserVO {
     /**
      * 用户名称
      */
+    @NotBlank(message = "用户名称不能为空")
     private String name;
 
     /**
      * 电话号码
      */
+    @NotBlank(message = "手机号不能为空")
     private String phone;
 
     /**
@@ -63,6 +74,14 @@ public class UserVO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCode() {

@@ -171,21 +171,21 @@
                 contentType:"application/json;charset=utf-8",
                 url:"/user/register",
                 data:JSON.stringify({
-                    "telphone":telphone,
+                    "phone":telphone,
                     "password":password,
-                    "nickName":nickName,
-                    "gender":gender
+                    "name":nickName,
+                    "sex":gender
                 }),
                 success:function(data){
-                    if(data.status == "success"){
+                    if(data.code == "0"){
                         alert("注册成功");
                         window.location.href="/static/login.html";
                     }else{
-                        alert("请求失败,原因为"+data.data.errMsg);
+                        alert("请求失败,原因为"+data.message);
                     }
                 },
                 error:function(data){
-                    alert("网络请求失败，原因为"+data.responseText);
+                    alert("网络请求失败，原因为"+data.message);
                 }
             });
             return false;

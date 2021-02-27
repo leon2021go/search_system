@@ -5,10 +5,11 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="user_desc" jdbcType="VARCHAR" property="userDesc" />
-    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="birthday" jdbcType="VARCHAR" property="birthday" />
     <result column="type" jdbcType="TINYINT" property="type" />
@@ -22,7 +23,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, name, open_id, phone, pic, user_desc, sex, location, birthday, type, points, extension, is_del, create_id, update_id, create_time,
+    id, name, open_id, password, phone, pic, user_desc, gender, location, birthday, type, points, extension, is_del, create_id, update_id, create_time,
     update_time
   </sql>
 
@@ -54,6 +55,18 @@
         #{id}
       </foreach>
     </select>
+  <select id="getByTelphoneAndPassword" resultType="com.leon.flying.entity.MzUserDO">
+    select
+    <include refid="Base_Column_List" />
+    from `user`
+    where
+    phone = #{telphone,jdbcType=VARCHAR}
+    and
+    password = #{password,jdbcType=VARCHAR}
+  </select>
+    <select id="countAllUser" resultType="java.lang.Integer">
+      select count(1) from user
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     update mz_user set is_del = 1
@@ -61,21 +74,22 @@
   </delete>
 
   <insert id="insert" parameterType="com.leon.flying.entity.MzUserDO">
-    insert into mz_user (id, name, phone, 
-      pic, user_desc, sex, location, birthday,
+    insert into mz_user (id, name, phone, password,
+      pic, user_desc, gender, location, birthday,
       type, points,
       extension, is_del, create_id, 
       update_id, create_time, update_time
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{pic,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{points,jdbcType=INTEGER},
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},  #{password,jdbcType=VARCHAR},
+      #{pic,jdbcType=VARCHAR}, #{user_desc,jdbcType=TINYINT}, #{gender,jdbcType=TINYINT},
+      #{location,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{points,jdbcType=INTEGER},
       #{extension,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT}, #{createId,jdbcType=BIGINT}, 
       #{updateId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
 
   <insert id="insertSelective" parameterType="com.leon.flying.entity.MzUserDO">
-    insert into mz_user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -85,6 +99,9 @@
       </if>
       <if test="openId != null">
         open_id,
+      </if>
+      <if test="password != null">
+        password,
       </if>
       <if test="phone != null">
         phone,
@@ -126,6 +143,9 @@
       </if>
        <if test="openId != null">
         #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},

@@ -212,15 +212,15 @@ License: You must have a valid license purchased only from themeforest(the above
                     "id": id,
                 },
                 success : function(data){
-                    if(data.status == 'success'){
+                    if(data.code == '0'){
                         alert("启用商户成功");
                         window.location.href = "/admin/seller/index";
                     }else{
-                        alert("启用商户失败，原因为"+data.data.errMsg);
+                        alert("启用商户失败，原因为"+data.message);
                     }
                 },
                 error : function(data){
-                    alert("启用商户失败，原因为"+data.responseText);
+                    alert("启用商户失败，原因为"+data.message);
                 }
             });
         });
@@ -241,15 +241,15 @@ License: You must have a valid license purchased only from themeforest(the above
                     "id": id,
                 },
                 success : function(data){
-                    if(data.status == 'success'){
+                    if(data.code == '0'){
                         alert("禁用商户成功");
                         window.location.href = "/admin/seller/index";
                     }else{
-                        alert("禁用商户失败，原因为"+data.data.errMsg);
+                        alert("禁用商户失败，原因为"+data.message);
                     }
                 },
                 error : function(data){
-                    alert("禁用商户失败，原因为"+data.responseText);
+                    alert("禁用商户失败，原因为"+data.message);
                 }
             });
         });

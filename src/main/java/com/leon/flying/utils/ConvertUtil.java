@@ -1,7 +1,10 @@
 package com.leon.flying.utils;
 
 import org.springframework.beans.BeanUtils;
+import sun.misc.BASE64Encoder;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +41,11 @@ public class ConvertUtil {
             couponDOs.add(convertObject(element, clazz));
         }
         return couponDOs;
+    }
+
+    public static String encodeMd5(String pwd) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        return base64Encoder.encode(messageDigest.digest(pwd.getBytes()));
     }
 }

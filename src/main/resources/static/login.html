@@ -173,14 +173,15 @@
                     "password":password
                 }),
                 success:function(data){
-                    if(data.status == "success"){
+                    console.log(data)
+                    if(data.code == '0'){
                         window.location.href="/static/index.html";
                     }else{
-                        alert("请求失败,原因为"+data.data.errMsg);
+                        alert("请求失败,原因为"+data.message);
                     }
                 },
                 error:function(data){
-                    alert("网络请求失败，原因为"+data.responseText);
+                    alert("网络请求失败，原因为"+data.message);
                 }
             });
             return false;

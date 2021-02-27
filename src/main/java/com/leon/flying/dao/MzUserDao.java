@@ -15,6 +15,7 @@ import java.util.List;
  * @author : 23874
  * @since : 2020-07-12
  */
+
 public interface MzUserDao {
     /**
      *  根据主键删除数据库的记录
@@ -49,6 +50,8 @@ public interface MzUserDao {
      * @return 实体
      */
     MzUserDO getByPrimaryKey(Long id);
+
+    MzUserDO getByTelphoneAndPassword(@Param("telphone") String telphone, @Param("password") String password);
 
     /**
      *  根据指定主键获取一条数据库记录
@@ -88,4 +91,6 @@ public interface MzUserDao {
      * @return
      */
     List<MzUserDO> listUsersByIds(@Param("ids") List<Long> ids);
+
+    Integer countAllUser();
 }

@@ -5,6 +5,11 @@ package com.leon.flying.common;
  * @author leon
  */
 public class WXConstants {
+
+    public static final String CURRENT_ADMIN_SESSION = "currentAdminSession";
+
+    public static final String CONTROLLER_NAME = "CONTROLLER_NAME";
+    public static final String ACTION_NAME = "ACTION_NAME";
     /**
      * 微信支付返回信息码
      */
