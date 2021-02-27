@@ -9,6 +9,7 @@ public interface SellerService {
 
     SellerEntity create(SellerVO sellerVO);
     SellerEntity get(Long id);
+    SellerVO getById(Long id);
     List<SellerEntity> selectAll();
     SellerEntity changeStatus(Long id, Integer disablesFlag);
 }

@@ -41,6 +41,14 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public SellerVO getById(Long id) {
+        SellerEntity sellerEntity = sellerEntityDao.selectByPrimaryKey(id);
+        SellerVO sellerVO = new SellerVO();
+        sellerVO.setName(sellerEntity.getName());
+        return sellerVO;
+    }
+
+    @Override
     public List<SellerEntity> selectAll() {
         return sellerEntityDao.selectAll();
     }
