@@ -14,6 +14,7 @@ public class GlobelExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public MzRespose doError(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Exception e){
+        e.printStackTrace();
         if(e instanceof MzBusinessException){
             return MzRespose.error(-1, e.getMessage());
         }else if(e instanceof NoHandlerFoundException){

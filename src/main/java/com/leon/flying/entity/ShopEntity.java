@@ -54,6 +54,8 @@ public class ShopEntity {
      */
     private BigDecimal longitude;
 
+    private Integer distance;
+
     /**
      * 
      */
@@ -215,6 +217,14 @@ public class ShopEntity {
      */
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     /**

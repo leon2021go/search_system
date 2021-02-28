@@ -49,6 +49,8 @@ public class ShopVO {
     @NotNull(message = "经度不能为空")
     private BigDecimal longitude;
 
+    private Integer distance;
+
     /**
      *
      */
@@ -153,6 +155,14 @@ public class ShopVO {
 
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     public String getCategoryId() {

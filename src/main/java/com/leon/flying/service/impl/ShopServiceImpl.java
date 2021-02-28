@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -94,5 +96,61 @@ public class ShopServiceImpl implements ShopService {
             result.add(shopVO);
         }
         return result;
+    }
+
+    @Override
+    public List<ShopVO> recommand(BigDecimal longitude, BigDecimal latitude) {
+        List<ShopEntity> list = shopEntityDao.recommand(longitude, latitude);
+        List<ShopVO> result = new ArrayList<>();
+        for(ShopEntity shopEntity : list){
+            ShopVO shopVO = new ShopVO();
+            shopVO.setId(String.valueOf(shopEntity.getId()));
+            shopVO.setAddress(shopEntity.getAddress());
+            shopVO.setName(shopEntity.getName());
+            shopVO.setIconUrl(shopEntity.getIconUrl());
+            shopVO.setLatitude(shopEntity.getLatitude());
+            shopVO.setStartTime(shopEntity.getStartTime());
+            shopVO.setEndTime(shopEntity.getEndTime());
+            shopVO.setLongitude(shopEntity.getLongitude());
+            shopVO.setRemarkScore(shopEntity.getRemarkScore());
+            shopVO.setPricePerMan(shopEntity.getPricePerMan());
+            shopVO.setTags(shopEntity.getTags());
+            shopVO.setDistance(shopEntity.getDistance());
+            shopVO.setCategoryVO(categoryService.getById(shopEntity.getCategoryId()));
+            shopVO.setSellerVO(sellerService.getById(shopEntity.getSellerId()));
+            result.add(shopVO);
+        }
+        return result;
+    }
+
+    @Override
+    public List<ShopVO> search(BigDecimal longitude,BigDecimal latitude,
+                               String keyword,Integer orderby,Integer categoryId,String tags) {
+        List<ShopEntity> list = shopEntityDao.search(keyword,longitude,orderby, latitude, categoryId, tags);
+        List<ShopVO> result = new ArrayList<>();
+        for(ShopEntity shopEntity : list){
+            ShopVO shopVO = new ShopVO();
+            shopVO.setId(String.valueOf(shopEntity.getId()));
+            shopVO.setAddress(shopEntity.getAddress());
+            shopVO.setName(shopEntity.getName());
+            shopVO.setIconUrl(shopEntity.getIconUrl());
+            shopVO.setLatitude(shopEntity.getLatitude());
+            shopVO.setStartTime(shopEntity.getStartTime());
+            shopVO.setEndTime(shopEntity.getEndTime());
+            shopVO.setLongitude(shopEntity.getLongitude());
+            shopVO.setRemarkScore(shopEntity.getRemarkScore());
+            shopVO.setPricePerMan(shopEntity.getPricePerMan());
+            shopVO.setTags(shopEntity.getTags());
+            shopVO.setDistance(shopEntity.getDistance());
+            shopVO.setCategoryVO(categoryService.getById(shopEntity.getCategoryId()));
+            shopVO.setSellerVO(sellerService.getById(shopEntity.getSellerId()));
+            result.add(shopVO);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Map<String, Object>> searchGroupByTags(String keyword, Integer categoryId, String tags) {
+        return shopEntityDao.searchGroupByTags(keyword, categoryId, tags);
     }
 }
